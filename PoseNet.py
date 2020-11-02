@@ -1,7 +1,8 @@
 import torch
+import numpy as np
+
 import torch.nn as nn
 import torch.nn.functional as F
-import numpy as np
 from torch.autograd import Variable
 
 #
@@ -13,7 +14,9 @@ from torch.autograd import Variable
 __all__ = ['PoseNet', 'posenet_v1', 'PoseLoss']
 
 class InceptionV1(nn.Module):
+
     def __init__(self, in_channels, n1x1, n3x3red, n3x3, n5x5red, n5x5, pool_planes):
+
         super(InceptionV1, self).__init__()
         # 1x1 conv branch
         self.b1 = nn.Sequential(
@@ -45,6 +48,7 @@ class InceptionV1(nn.Module):
         )
 
     def forward(self, x):
+
         y1 = self.b1(x)
         y2 = self.b2(x)
         y3 = self.b3(x)
@@ -54,7 +58,9 @@ class InceptionV1(nn.Module):
 
 # PoseNet
 class PoseNet(nn.Module):
+
     def __init__(self):
+
         super(PoseNet, self).__init__()
 
         self.pre_layers = nn.Sequential(
@@ -99,6 +105,7 @@ class PoseNet(nn.Module):
         self.cls_fc_pose_wpqr_1024 = nn.Linear(1024, 4)
 
     def forward(self, x):
+
         out = self.pre_layers(x)
 
         out = self.a3(out)
@@ -154,6 +161,7 @@ class PoseNet(nn.Module):
 class PoseLoss(nn.Module):
 
     def __init__(self, w1_x, w2_x, w3_x, w1_q, w2_q, w3_q):
+
         super(PoseLoss, self).__init__()
         self.w1_x = w1_x
         self.w2_x = w2_x
@@ -164,6 +172,7 @@ class PoseLoss(nn.Module):
         return
 
     def forward(self, p1_x, p1_q, p2_x, p2_q, p3_x, p3_q, poseGT):
+
         pose_x = poseGT[:, 0:3]
         pose_q = poseGT[:, 3:]
 
@@ -179,5 +188,6 @@ class PoseLoss(nn.Module):
 
 
 def posenet_v1():
+    
     model = PoseNet()
     return model
