@@ -1,5 +1,3 @@
-# subsetting cifar 10 -> first 3 batches for 3 classes
-
 import pickle
 import numpy as np
 
@@ -8,6 +6,10 @@ import torchvision.transforms as transforms
 import random
 from torch.utils.data import Dataset
 from PIL import Image
+
+#
+# Helper functions to read a subset of CIFAR-10 dataset
+#
 
 def s(x): return(np.shape(x))
 
